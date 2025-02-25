@@ -1,17 +1,26 @@
 import streamlit as st
 import time
 from PIL import Image
+import base64
 
 # Load invitation image
 image_path = 'demo.jpg'
 invit_image = Image.open(image_path)
 
-# Custom CSS for curtain animation
+# Load and encode sound file
+sound_path = '/mnt/data/curtain_sound.mp3'
+def get_base64_sound(sound_path):
+    with open(sound_path, "rb") as sound_file:
+        sound_base64 = base64.b64encode(sound_file.read()).decode()
+    return f"data:audio/mp3;base64,{sound_base64}"
+sound_base64 = get_base64_sound(sound_path)
+
+# Custom CSS for curtain animation with image
 st.markdown(
     """
     <style>
         @keyframes openCurtain {
-            0% { width: 100%; }
+            0% { width: 50%; }
             100% { width: 0%; }
         }
         .curtain-left, .curtain-right {
@@ -19,7 +28,8 @@ st.markdown(
             top: 0;
             width: 50%;
             height: 100%;
-            background: #800000;
+            background-image: url('https://www.publicdomainpictures.net/pictures/300000/nahled/red-theater-curtain.jpg');
+            background-size: cover;
             z-index: 9999;
         }
         .curtain-left { left: 0; animation: openCurtain 2s forwards; }
@@ -27,6 +37,16 @@ st.markdown(
     </style>
     <div class="curtain-left"></div>
     <div class="curtain-right"></div>
+    """,
+    unsafe_allow_html=True
+)
+
+# Play sound effect
+st.markdown(
+    f"""
+    <audio autoplay>
+        <source src="{sound_base64}" type="audio/mp3">
+    </audio>
     """,
     unsafe_allow_html=True
 )
