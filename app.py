@@ -8,7 +8,7 @@ image_path = 'demo.jpg'
 invit_image = Image.open(image_path)
 
 # Load and encode sound file
-sound_path = '/mnt/data/curtain_sound.mp3'
+sound_path = 'crowd-cheer-in-school-auditorium-236699.mp3'
 def get_base64_sound(sound_path):
     with open(sound_path, "rb") as sound_file:
         sound_base64 = base64.b64encode(sound_file.read()).decode()
