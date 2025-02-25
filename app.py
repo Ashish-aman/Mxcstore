@@ -1,3 +1,13 @@
+# import streamlit as st
+# import time
+# from PIL import Image
+# import base64
+
+# # Load invitation image
+# image_path = 'demo.jpg'
+# invit_image = Image.open(image_path)
+
+# # Load and encode sound file
 import streamlit as st
 import time
 from PIL import Image
@@ -9,6 +19,7 @@ invit_image = Image.open(image_path)
 
 # Load and encode sound file
 sound_path = 'crowd-cheer-in-school-auditorium-236699.mp3'
+
 def get_base64_sound(sound_path):
     with open(sound_path, "rb") as sound_file:
         sound_base64 = base64.b64encode(sound_file.read()).decode()
@@ -21,20 +32,28 @@ st.markdown(
     <style>
         @keyframes openCurtain {
             0% { width: 50%; }
-            100% { width: 0%; }
+            100% { width: 0%; opacity: 0; }
         }
-        .curtain-left, .curtain-right {
+        .curtain-container {
             position: fixed;
             top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .curtain-left, .curtain-right {
             width: 50%;
             height: 100%;
             background-image: url('https://www.publicdomainpictures.net/pictures/300000/nahled/red-theater-curtain.jpg');
             background-size: cover;
-            z-index: 9999;
+            animation: openCurtain 2s forwards;
         }
-        .curtain-left { left: 0; animation: openCurtain 2s forwards; }
-        .curtain-right { right: 0; animation: openCurtain 2s forwards; }
-
+        .curtain-left { animation-delay: 0s; }
+        .curtain-right { animation-delay: 0s; }
         .invitation-container {
             display: flex;
             justify-content: center;
@@ -54,8 +73,10 @@ st.markdown(
             transform: scale(1.05);
         }
     </style>
-    <div class="curtain-left"></div>
-    <div class="curtain-right"></div>
+    <div class="curtain-container">
+        <div class="curtain-left"></div>
+        <div class="curtain-right"></div>
+    </div>
     """,
     unsafe_allow_html=True
 )
