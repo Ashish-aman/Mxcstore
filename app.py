@@ -377,9 +377,16 @@ elif choice == "Contact Us":
     set_style()
     st.title("Contact Us")
     st.write("📍 **Location:** Maxicure Pharma, Mumbai, India")
-    st.write("📞 **Phone:** +91 99999 99999")
+    st.write("📞 **Phone:** +91 9939135365")
     st.write("📧 **Email:** contact@maxicurepharma.com")
-    st.markdown("[View on Google Maps](https://goo.gl/maps/example)")
+    st.markdown("[View on Google Maps](https://maps.app.goo.gl/BMbeGKBMJ8gpDNA8A)")
+    # Google Maps Embed
+    map_html = """
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3608.815428920425!2d86.98605377538331!3d25.243140877681476!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f049726e7f9489%3A0x41e3a05da0e7ce15!2sMaxicure%20Pharma%20Pvt.%20Ltd.!5e0!3m2!1sen!2sin!4v1742763130395!5m2!1sen!2sin"
+    width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    """
+    
+    st.components.v1.html(map_html, height=450)
 
 # Review Box Section
 elif choice == "Review Box":
