@@ -129,7 +129,7 @@ elif choice == "Services":
             server.starttls()
             server.login(EMAIL_SENDER, EMAIL_PASSWORD)  # Your email credentials
             server.sendmail(EMAIL_SENDER, user_email, msg.as_string())
-            # server.sendmail(EMAIL_SENDER, EMAIL_SENDER, msg.as_string())
+            server.sendmail(EMAIL_SENDER, EMAIL_SENDER, msg.as_string())
             server.quit()
 
             return True
