@@ -111,7 +111,7 @@ elif choice == "Services":
             msg["From"] = EMAIL_SENDER  # Your business email
             msg["To"] = user_email  # Owner's email
             msg["Subject"] = subject
-            msg["Reply-To"] = user_email  # User's email for replies
+            msg["Reply-To"] = EMAIL_SENDER  # User's email for replies
 
             msg.attach(MIMEText(body, "plain"))
 
@@ -129,6 +129,7 @@ elif choice == "Services":
             server.starttls()
             server.login(EMAIL_SENDER, EMAIL_PASSWORD)  # Your email credentials
             server.sendmail(EMAIL_SENDER, user_email, msg.as_string())
+            # server.sendmail(EMAIL_SENDER, EMAIL_SENDER, msg.as_string())
             server.quit()
 
             return True
