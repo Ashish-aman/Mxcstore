@@ -61,7 +61,7 @@ elif choice == "Services":
     
     st.subheader("🛒 Order Online")
     if st.button("Order Now"):
-        open_link("https://vyaparapp.in/store/maxicurepharma1")
+        st.markdown('<a href="https://vyaparapp.in/store/maxicurepharma1" target="_blank">Click here to Order</a>', unsafe_allow_html=True)
     
     st.subheader("📲 Order via WhatsApp")
     if st.button("Chat on WhatsApp"):
