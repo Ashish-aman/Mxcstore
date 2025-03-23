@@ -3,8 +3,14 @@ import pandas as pd
 import base64
 import webbrowser
 from datetime import datetime
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
+TWILIO_ACCOUNT_SID = os.getenv(TWILIO_ACCOUNT_SID)
+TWILIO_AUTH_TOKEN = os.getenv(TWILIO_AUTH_TOKEN)
 
+client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 def open_link(url):
     webbrowser.open_new_tab(url)
 
@@ -72,8 +78,8 @@ elif choice == "Services":
     from email import encoders
 
     # Twilio Credentials
-    TWILIO_ACCOUNT_SID = "ACa64ff18c51fd228d0e22f5dfcd2032a4"
-    TWILIO_AUTH_TOKEN = "40da080d210f793fd9935db870a652b0"
+    TWILIO_ACCOUNT_SID = TWILIO_ACCOUNT_SID
+    TWILIO_AUTH_TOKEN = TWILIO_AUTH_TOKEN
     TWILIO_WHATSAPP_NUMBER = "+15392811447"  # Twilio WhatsApp sender number
 
     # Email Credentials
