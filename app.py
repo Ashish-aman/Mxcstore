@@ -79,10 +79,10 @@ elif choice == "Services":
     # Email Credentials
     EMAIL_RECEIVER = "your_email@gmail.com"
     EMAIL_PASSWORD = "koirvpslnvewsdpf"
-    EMAIL_SENDER = "m22ma002@iitj.ac.in"  # Owner's Email
+    EMAIL_SENDER = "m22ma002@alumni.iitj.ac.in"  # Owner's Email
 
     # WhatsApp Owner Number
-    # OWNER_WHATSAPP_NUMBER = "whatsapp:+917085758803"
+    # OWNER_WHATSAPP_NUMBER = "+917085758803"
 
     # Function to Send WhatsApp Message
     def send_whatsapp_message(receiver_number, message_body):
