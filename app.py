@@ -320,9 +320,9 @@ elif choice == "Services":
             msg["Subject"] = subject
             msg["From"] = EMAIL_SENDER
             msg["To"] = recipient_email
-            msg["To"] = EMAIL_SENDER
+            msg["Reply-To"] = EMAIL_SENDER
             msg.set_content(body)
-    
+
             with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
                 server.login(EMAIL_SENDER, EMAIL_PASSWORD)
                 server.send_message(msg)
