@@ -59,14 +59,16 @@ elif choice == "Services":
     set_style()
     st.title("Our Services")
     
-    import streamlit as st
-    
     st.subheader("🛒 Order Online")
     
     order_link = "https://vyaparapp.in/store/maxicurepharma1"
     
     if st.button("Order Now"):
-        st.markdown(f'<meta http-equiv="refresh" content="0; url={order_link}">', unsafe_allow_html=True)
+        js = f"window.open('{order_link}')"
+        st.markdown(f'<script>{js}</script>', unsafe_allow_html=True)
+    
+    # if st.button("Order Now"):
+    #     st.markdown(f'<meta http-equiv="refresh" content="0; url={order_link}">', unsafe_allow_html=True)
 
     
     st.subheader("📲 Order via WhatsApp")
