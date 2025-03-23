@@ -184,57 +184,126 @@ elif choice == "Services":
     
     import streamlit as st
     import plotly.graph_objects as go
+    import os
+    import smtplib
+    from email.message import EmailMessage
+    from twilio.rest import Client
+    import matplotlib.pyplot as plt
     
-    st.subheader("⚖️ BMI Calculator")
+
     
+    # Email Credentials
+    EMAIL_RECEIVER = "your_email@gmail.com"
+    EMAIL_PASSWORD = "koirvpslnvewsdpf"
+    EMAIL_SENDER = "m22ma002@alumni.iitj.ac.in" 
     
+    # Function to send WhatsApp Message
+    def send_whatsapp_message(phone_number, message):
+        client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+        message = client.messages.create(
+            from_=TWILIO_WHATSAPP_NUMBER,
+            body=message,
+            to=f"whatsapp:{phone_number}"
+        )
+        return message.sid
+    
+    # Function to send Email with Attachment
+    def send_email(subject, body, recipient_email, attachment_path):
+        msg = EmailMessage()
+        msg["Subject"] = subject
+        msg["From"] = EMAIL_SENDER
+        msg["To"] = recipient_email
+        msg.set_content(body)
+    
+        # Attach Image
+        with open(attachment_path, "rb") as f:
+            msg.add_attachment(f.read(), maintype="image", subtype="png", filename="BMI_Graph.png")
+    
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+            server.login(EMAIL_SENDER, EMAIL_PASSWORD)
+            server.send_message(msg)
+    
+    # Function to Create and Save BMI Graph
+    def create_bmi_graph(bmi, category):
+        fig, ax = plt.subplots(figsize=(6, 3))
+        ax.barh(["Underweight", "Normal", "Overweight", "Obese"], [18.5, 24.9, 29.9, 40], color=["blue", "green", "orange", "red"])
+        ax.axvline(bmi, color="black", linestyle="--", linewidth=2)
+        ax.set_title(f"BMI: {bmi} ({category})")
+        ax.set_xlabel("BMI Value")
+        
+        graph_path = "bmi_graph.png"
+        plt.savefig(graph_path)
+        return graph_path
+    
+    # Streamlit UI
+    st.title("⚖️ BMI Calculator")
     
     # User Input
+    user_phone = st.text_input("Enter Your WhatsApp Number (With Country Code)")
+    user_email = st.text_input("Enter Your Email Address")
     height_cm = st.number_input("Enter Height (cm)", min_value=100, max_value=250, step=1)
     weight_kg = st.number_input("Enter Weight (kg)", min_value=20, max_value=200, step=1)
     
-    # Calculate BMI
-    if st.button("📊 Calculate BMI"):
-        height_m = height_cm / 100  # Convert cm to meters
-        bmi = round(weight_kg / (height_m ** 2), 2)
-        st.metric("Your BMI", bmi)
+    if st.button("📊 Calculate BMI & Send Results"):
+        if user_phone and user_email:
+            height_m = height_cm / 100  # Convert cm to meters
+            bmi = round(weight_kg / (height_m ** 2), 2)
+            st.metric("Your BMI", bmi)
     
-        # Determine BMI Category
-        if bmi < 18.5:
-            category, color = "Underweight", "blue"
-        elif 18.5 <= bmi < 25:
-            category, color = "Normal Weight", "green"
-        elif 25 <= bmi < 30:
-            category, color = "Overweight", "orange"
+            # Determine BMI Category
+            if bmi < 18.5:
+                category, color = "Underweight", "blue"
+            elif 18.5 <= bmi < 25:
+                category, color = "Normal Weight", "green"
+            elif 25 <= bmi < 30:
+                category, color = "Overweight", "orange"
+            else:
+                category, color = "Obese", "red"
+    
+            st.success(f"**Category:** {category}")
+    
+            # BMI Gauge Chart
+            fig = go.Figure(go.Indicator(
+                mode="gauge+number",
+                value=bmi,
+                title={"text": "BMI Indicator"},
+                gauge={
+                    "axis": {"range": [10, 40]},
+                    "steps": [
+                        {"range": [10, 18.5], "color": "blue"},
+                        {"range": [18.5, 25], "color": "green"},
+                        {"range": [25, 30], "color": "orange"},
+                        {"range": [30, 40], "color": "red"},
+                    ],
+                    "bar": {"color": color}
+                }
+            ))
+    
+            st.plotly_chart(fig)
+    
+            # Generate and Save BMI Graph
+            graph_path = create_bmi_graph(bmi, category)
+    
+            # WhatsApp Message
+            message_body = f"Hello! Your BMI result is **{bmi} ({category})**."
+            try:
+                send_whatsapp_message(user_phone, message_body)
+                st.success("✅ BMI result sent to WhatsApp!")
+            except Exception as e:
+                st.error(f"❌ WhatsApp Message Failed: {e}")
+    
+            # Email with Attachment
+            email_subject = "Your BMI Result"
+            email_body = f"Your BMI is {bmi}, which falls under the category '{category}'. Check the attached BMI graph."
+            try:
+                send_email(email_subject, email_body, user_email, graph_path)
+                st.success("✅ BMI result sent via Email with graph attached!")
+            except Exception as e:
+                st.error(f"❌ Email Sending Failed: {e}")
+    
         else:
-            category, color = "Obese", "red"
+            st.warning("⚠️ Please enter both your WhatsApp number and Email before submitting!")
     
-        # Display Category
-        st.success(f"**Category:** {category}")
-    
-        # BMI Gauge Chart
-        fig = go.Figure(go.Indicator(
-            mode="gauge+number",
-            value=bmi,
-            title={"text": "BMI Indicator"},
-            gauge={
-                "axis": {"range": [10, 40]},
-                "steps": [
-                    {"range": [10, 18.5], "color": "blue"},
-                    {"range": [18.5, 25], "color": "green"},
-                    {"range": [25, 30], "color": "orange"},
-                    {"range": [30, 40], "color": "red"},
-                ],
-                "bar": {"color": color}
-            }
-        ))
-    
-        # Display Gauge Chart
-        st.plotly_chart(fig)
-
-    # Optional: WhatsApp API Integration (Placeholder)
-    st.success("BMI sent to WhatsApp! ✅")  # Add your API logic here
-
 
     st.subheader("📅 Book Slot for BP/Glucometer")
     name = st.text_input("Name")
