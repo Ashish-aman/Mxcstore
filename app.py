@@ -82,7 +82,7 @@ elif choice == "Services":
     EMAIL_SENDER = "m22ma002@alumni.iitj.ac.in"  # Owner's Email
 
     # WhatsApp Owner Number
-    # OWNER_WHATSAPP_NUMBER = "+917085758803"
+    # OWNER_WHATSAPP_NUMBER = "whatsapp:+917085758803"
 
     # Function to Send WhatsApp Message
     def send_whatsapp_message(receiver_number, message_body):
@@ -173,6 +173,7 @@ elif choice == "Services":
     date = st.date_input("Select Date")
     time = st.time_input("Select Time")
     if st.button("Book Now"):
+        # send_email(email_subject, email_body, file_path, user_email)
         st.success("Slot booked successfully!")
         # Send booking details via WhatsApp & Email
 
