@@ -2,3 +2,5 @@ streamlit
 pillow
 pandas
 twilio
+dotenv
+os
