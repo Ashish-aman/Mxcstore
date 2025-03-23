@@ -3,3 +3,4 @@ pillow
 pandas
 twilio
 dotenv
+plotly
