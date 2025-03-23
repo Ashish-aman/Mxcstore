@@ -10,7 +10,7 @@ load_dotenv()
 TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID')
 TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
 
-client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+# client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 def open_link(url):
     webbrowser.open_new_tab(url)
 
