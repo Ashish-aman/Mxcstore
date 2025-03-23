@@ -1,106 +1,214 @@
 import streamlit as st
-import time
-from PIL import Image
+import pandas as pd
 import base64
+import webbrowser
+from datetime import datetime
 
-# Load and encode invitation image
-def get_base64_image(image_path):
-    with open(image_path, "rb") as image_file:
-        return base64.b64encode(image_file.read()).decode()
 
-image_path = 'demo.jpg'
-invit_image_base64 = get_base64_image(image_path)
+def open_link(url):
+    webbrowser.open_new_tab(url)
 
-# Load and encode sound file
-sound_path = 'crowd-cheer-in-school-auditorium-236699.mp3'
-def get_base64_sound(sound_path):
-    with open(sound_path, "rb") as sound_file:
-        return base64.b64encode(sound_file.read()).decode()
+# Custom futuristic CSS
+def set_style():
+    st.markdown(
+        """
+        <style>
+        body {
+            background-color: #0d1117;
+            color: white;
+            font-family: 'Arial', sans-serif;
+        }
+        .stButton>button {
+            background: linear-gradient(135deg, #1e90ff, #00bfff);
+            color: white;
+            border-radius: 10px;
+        }
+        .stTextInput>div>div>input {
+            border-radius: 10px;
+        }
+        .stDataFrame {
+            border-radius: 10px;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
 
-sound_base64 = get_base64_sound(sound_path)
+# Sidebar Navigation
+st.sidebar.title("Maxicure Pharma")
+menu = ["Home", "Services", "Products", "Contact Us", "Review Box", "Blogs"]
+choice = st.sidebar.radio("Menu", menu)
 
-# Custom CSS for curtain animation with image and heavy styling for the invitation
-st.markdown(
-    f"""
-    <style>
-        @keyframes openCurtain {{
-            0% {{ width: 50%; }}
-            100% {{ width: 0%; opacity: 0; }}
-        }}
-        .curtain-container {{
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: space-between;
-            z-index: 9999;
-            pointer-events: none;
-        }}
-        .curtain-left, .curtain-right {{
-            width: 50%;
-            height: 100%;
-            background-image: url('https://www.publicdomainpictures.net/pictures/300000/nahled/red-theater-curtain.jpg');
-            background-size: cover;
-            animation: openCurtain 2s forwards;
-        }}
-        .curtain-left {{ animation-delay: 0s; }}
-        .curtain-right {{ animation-delay: 0s; }}
-        .invitation-container {{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-            padding: 20px;
-            background: linear-gradient(to right, #ffefba, #ffffff);
-            border-radius: 15px;
-            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
-        }}
-        .invitation-container img {{
-            border: 8px solid #800000;
-            border-radius: 15px;
-            transition: transform 0.5s ease-in-out;
-        }}
-        .invitation-container img:hover {{
-            transform: scale(1.05);
-        }}
-    </style>
-    <div class="curtain-container">
-        <div class="curtain-left"></div>
-        <div class="curtain-right"></div>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+# Home Section
+if choice == "Home":
+    set_style()
+    st.title("Welcome to Maxicure Pharma")
+    col1, col2, col3 = st.columns(3)
+    col1.metric("Customers Served", "5,000+")
+    col2.metric("Orders Processed", "10,000+")
+    col3.metric("Satisfied Clients", "98.5%")
 
-# Play sound effect
-st.markdown(
-    f"""
-    <audio autoplay>
-        <source src="data:audio/mp3;base64,{sound_base64}" type="audio/mp3">
-    </audio>
-    """,
-    unsafe_allow_html=True
-)
+# Services Section
+elif choice == "Services":
+    set_style()
+    st.title("Our Services")
+    
+    st.subheader("🛒 Order Online")
+    if st.button("Order Now"):
+        open_link("https://your-ordering-link.com")
+    
+    st.subheader("📲 Order via WhatsApp")
+    if st.button("Chat on WhatsApp"):
+        open_link("https://wa.me/919999999999")
 
-# Display image after animation delay
-time.sleep(2)
-st.markdown(
-    f"""
-    <div class="invitation-container">
-        <img src="data:image/jpeg;base64,{invit_image_base64}" alt="Grand Opening Invitation" width="80%">
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+    
+    import streamlit as st
+    from twilio.rest import Client
+    import smtplib
+    import os
+    from email.mime.multipart import MIMEMultipart
+    from email.mime.text import MIMEText
+    from email.mime.base import MIMEBase
+    from email import encoders
 
-# Add a Stay Tuned message
-st.markdown(
-    """
-    <div style="text-align: center; margin-top: 20px; font-size: 24px; font-weight: bold; color: green;">
-        🎉 Stay tuned for updates on our new pharmacy website! 🎉
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+    # Twilio Credentials
+    TWILIO_ACCOUNT_SID = "ACa64ff18c51fd228d0e22f5dfcd2032a4"
+    TWILIO_AUTH_TOKEN = "40da080d210f793fd9935db870a652b0"
+    TWILIO_WHATSAPP_NUMBER = "+15392811447"  # Twilio WhatsApp sender number
+
+    # Email Credentials
+    EMAIL_RECEIVER = "your_email@gmail.com"
+    EMAIL_PASSWORD = "koirvpslnvewsdpf"
+    EMAIL_SENDER = "m22ma002@iitj.ac.in"  # Owner's Email
+
+    # WhatsApp Owner Number
+    # OWNER_WHATSAPP_NUMBER = "whatsapp:+917085758803"
+
+    # Function to Send WhatsApp Message
+    def send_whatsapp_message(receiver_number, message_body):
+        try:
+            client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+            message = client.messages.create(
+                from_=TWILIO_WHATSAPP_NUMBER,
+                to=receiver_number,
+                body=message_body
+            )
+            return True
+        except Exception as e:
+            st.error(f"❌ WhatsApp message failed: {str(e)}")
+            return False
+
+    # Function to Send Email with Attachment
+    def send_email(subject, body, attachment_path, user_email):
+        try:
+            msg = MIMEMultipart()
+            msg["From"] = EMAIL_SENDER  # Your business email
+            msg["To"] = EMAIL_RECEIVER  # Owner's email
+            msg["Subject"] = subject
+            msg["Reply-To"] = user_email  # User's email for replies
+
+            msg.attach(MIMEText(body, "plain"))
+
+            # Attach File
+            if attachment_path:
+                with open(attachment_path, "rb") as attachment:
+                    part = MIMEBase("application", "octet-stream")
+                    part.set_payload(attachment.read())
+                    encoders.encode_base64(part)
+                    part.add_header("Content-Disposition", f"attachment; filename={os.path.basename(attachment_path)}")
+                    msg.attach(part)
+
+            # Send Email via Business Email
+            server = smtplib.SMTP("smtp.gmail.com", 587)
+            server.starttls()
+            server.login(EMAIL_SENDER, EMAIL_PASSWORD)  # Your email credentials
+            server.sendmail(EMAIL_SENDER, EMAIL_RECEIVER, msg.as_string())
+            server.quit()
+
+            return True
+        except Exception as e:
+            st.error(f"❌ Email failed: {str(e)}")
+            return False
+
+
+    # Streamlit App
+    st.subheader("📜 Upload Prescription")
+
+    user_phone = st.text_input("Enter Your WhatsApp Number (With Country Code)", "+91")
+    user_email = st.text_input("Enter Your Email ID")
+
+    uploaded_file = st.file_uploader("Upload your prescription", type=["png", "jpg", "pdf"])
+
+    if uploaded_file and st.button("Submit"):
+        # Save File Locally
+        file_path = os.path.join("uploads", uploaded_file.name)
+        with open(file_path, "wb") as f:
+            f.write(uploaded_file.getbuffer())
+
+        # WhatsApp Message
+        message_body = f"Hello! Your prescription has been received. Our team will process it soon."
+        send_whatsapp_message(user_phone, message_body)  # To User
+        # send_whatsapp_message(TWILIO_WHATSAPP_NUMBER, f"New Prescription Received from {user_phone}")  # To Owner
+
+        # Send Email
+        email_subject = "New Prescription Uploaded"
+        email_body = f"Prescription received from: {user_email} ({user_phone})"
+        send_email(email_subject, email_body, file_path, user_email)
+
+        st.success("✅ Prescription sent to WhatsApp & Email successfully!")
+
+    
+    st.subheader("⚖️ BMI Calculator")
+    height = st.number_input("Enter Height (cm)", min_value=100, max_value=250, step=1)
+    weight = st.number_input("Enter Weight (kg)", min_value=20, max_value=200, step=1)
+    if st.button("Calculate BMI"):
+        bmi = round(weight / ((height / 100) ** 2), 2)
+        st.metric("Your BMI", bmi)
+        st.success("BMI sent to WhatsApp!")
+        # Send BMI result via WhatsApp API
+
+    st.subheader("📅 Book Slot for BP/Glucometer")
+    name = st.text_input("Name")
+    mobile = st.text_input("Mobile Number")
+    date = st.date_input("Select Date")
+    time = st.time_input("Select Time")
+    if st.button("Book Now"):
+        st.success("Slot booked successfully!")
+        # Send booking details via WhatsApp & Email
+
+# Products Section
+elif choice == "Products":
+    set_style()
+    st.title("Our Products")
+    categories = ["OTC Products", "Diabetes Care", "Veterinary Meds", "Other Products"]
+    category = st.selectbox("Select a Category", categories)
+    st.write(f"### {category} Available:")
+    # Display products dynamically (fetch from database)
+
+# Contact Us Section
+elif choice == "Contact Us":
+    set_style()
+    st.title("Contact Us")
+    st.write("📍 **Location:** Maxicure Pharma, Mumbai, India")
+    st.write("📞 **Phone:** +91 99999 99999")
+    st.write("📧 **Email:** contact@maxicurepharma.com")
+    st.markdown("[View on Google Maps](https://goo.gl/maps/example)")
+
+# Review Box Section
+elif choice == "Review Box":
+    set_style()
+    st.title("Customer Reviews")
+    st.write("Fetching reviews from Google Business...")
+    # Fetch & display real-time reviews (API integration required)
+
+# Blogs Section
+elif choice == "Blogs":
+    set_style()
+    st.title("Maxicure Pharma Blog")
+    blog_title = st.text_input("Blog Title")
+    blog_content = st.text_area("Write your blog here...")
+    if st.button("Publish Blog"):
+        st.success("Blog published successfully!")
+        # Store blog in a database
+
+st.sidebar.write("Powered by Maxicure Pharma 🚀")
