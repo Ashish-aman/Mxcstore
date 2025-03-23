@@ -5,6 +5,5 @@ pandas
 base64
 webbrowser
 twilio
-smtplib
-email
+
 datetime
