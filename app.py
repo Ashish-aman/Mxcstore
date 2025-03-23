@@ -7,8 +7,8 @@ from dotenv import load_dotenv
 import os
 load_dotenv()
 
-TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID')
-TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN')
+TWILIO_ACCOUNT_SID = os.getenv(TWILIO_ACCOUNT_SID)
+TWILIO_AUTH_TOKEN = os.getenv(TWILIO_AUTH_TOKEN)
 
 # client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 def open_link(url):
@@ -61,7 +61,7 @@ elif choice == "Services":
     
     st.subheader("🛒 Order Online")
     if st.button("Order Now"):
-        open_link("https://your-ordering-link.com")
+        open_link("https://vyaparapp.in/store/maxicurepharma1")
     
     st.subheader("📲 Order via WhatsApp")
     if st.button("Chat on WhatsApp"):
