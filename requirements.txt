@@ -3,4 +3,3 @@ pillow
 pandas
 twilio
 dotenv
-os
