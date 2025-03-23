@@ -1,2 +1,10 @@
 streamlit
 pillow
+streamlit
+pandas
+base64
+webbrowser
+twilio
+smtplib
+email
+datetime
