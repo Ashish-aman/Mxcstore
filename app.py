@@ -103,7 +103,7 @@ elif choice == "Services":
         try:
             msg = MIMEMultipart()
             msg["From"] = EMAIL_SENDER  # Your business email
-            msg["To"] = EMAIL_RECEIVER  # Owner's email
+            msg["To"] = user_email  # Owner's email
             msg["Subject"] = subject
             msg["Reply-To"] = user_email  # User's email for replies
 
