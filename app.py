@@ -305,15 +305,63 @@ elif choice == "Services":
             st.warning("⚠️ Please enter both your WhatsApp number and Email before submitting!")
     
 
-    st.subheader("📅 Book Slot for BP/Glucometer")
+    import streamlit as st
+    import smtplib
+    from email.message import EmailMessage
+    
+    # Email Credentials (Replace with your email credentials)
+    EMAIL_PASSWORD = "koirvpslnvewsdpf"
+    EMAIL_SENDER = "m22ma002@alumni.iitj.ac.in"
+    
+    # Function to send Email
+    def send_email(subject, body, recipient_email):
+        try:
+            msg = EmailMessage()
+            msg["Subject"] = subject
+            msg["From"] = EMAIL_SENDER
+            msg["To"] = recipient_email
+            msg["To"] = EMAIL_SENDER
+            msg.set_content(body)
+    
+            with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+                server.login(EMAIL_SENDER, EMAIL_PASSWORD)
+                server.send_message(msg)
+            return "Email Sent Successfully!"
+        except Exception as e:
+            return f"Email sending failed: {e}"
+    
+    # Streamlit UI
+    st.subheader("📅 Book Slot for BP/Sugar/diabetes testing")
+    
+    # User Input
     name = st.text_input("Name")
-    mobile = st.text_input("Mobile Number")
+    email = st.text_input("Email Address")
     date = st.date_input("Select Date")
     time = st.time_input("Select Time")
-    if st.button("Book Now"):
-        # send_email(email_subject, email_body, file_path, user_email)
-        st.success("Slot booked successfully!")
-        # Send booking details via WhatsApp & Email
+    
+    if st.button("📩 Book Now & Send Email Confirmation"):
+        if name and email:
+            booking_details = f"""
+            Hello {name}, 
+            Your test slot is confirmed. 
+            
+            📅 Date: {date}  
+            ⏰ Time: {time}  
+            
+            Thank you for booking!
+            """
+    
+            # Send Email Confirmation
+            email_status = send_email("Slot Booking Confirmation", booking_details, email)
+            if "failed" not in email_status:
+                st.success("✅ Email Confirmation Sent!")
+            else:
+                st.error(email_status)
+    
+            st.success("🎉 Slot booked successfully!")
+        else:
+            st.warning("⚠️ Please fill all details (Name & Email) before booking!")
+
 
 # Products Section
 elif choice == "Products":
